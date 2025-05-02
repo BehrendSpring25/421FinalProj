@@ -11,5 +11,6 @@ namespace _421FinalProj
         public void removeTask(Task task);
         public void addTask(Task task);
         public void execute();
+        public void Build();
     }
 }

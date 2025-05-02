@@ -11,6 +11,7 @@ namespace _421FinalProj
 {
     public class UICanvas : Panel
     {
+        private static UICanvas c; // singleton instance
         public record Connection(PortPanel From, PortPanel To);
 
         private readonly List<Connection> _links = new();
@@ -25,7 +26,7 @@ namespace _421FinalProj
         private void RaiseConnectionChanged()
             => ConnectionChanged?.Invoke(this, EventArgs.Empty);
 
-        public UICanvas()
+        private UICanvas()
         {
             DoubleBuffered = true;
             BackColor = Color.Bisque;
@@ -34,6 +35,16 @@ namespace _421FinalProj
             Name = "Canvas";
             Size = new Size(571, 380);
             TabIndex = 3;
+        }
+
+        public static UICanvas getCanvas()
+        {
+            if (c == null)
+            {
+                c = new UICanvas();
+            }
+
+            return c;
         }
 
         public void StartRubberBand(PortPanel fromPort)

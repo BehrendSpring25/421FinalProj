@@ -8,24 +8,52 @@ namespace _421FinalProj
 {
     internal class Compile : StateIF
     {
-        private Canvas c = Canvas.getInstance();
+        private CanvasManager c = CanvasManager.getInstance();
         public void addTask(Task task)
         {
-            throw new NotImplementedException();
+            c.setState(new Modify());
+            c.getState().addTask(task);
         }
 
         public void execute()
         {
-            throw new NotImplementedException();
+            c.setState(new Execute());
+            c.getState().execute();
         }
 
         public void removeTask(Task task)
         {
-            throw new NotImplementedException();
+            c.setState(new Modify());
+            c.getState().removeTask(task);
         }
 
         public void Build()
         {
+            UICanvas ui = UICanvas.getCanvas();
+            
+            foreach (Panel p in ui.Controls)
+            {
+                if (p.Controls.Count == 6)
+                {
+                    EmailBuilderIF builder = new EmailBuilderIF();
+                    builder.To(p.Controls[1].Text);
+                    builder.Subject(p.Controls[3].Text);
+                    builder.Body(p.Controls[5].Text);
+
+                    c.addTask(builder.Build());
+                }
+
+                else
+                {
+                    SMSBuilderIF builder = new SMSBuilderIF();
+
+                    builder.To(p.Controls[1].Text);
+                    builder.Body(p.Controls[3].Text);
+
+                    c.addTask(builder.Build());
+
+                }
+            }
 
         }
     }

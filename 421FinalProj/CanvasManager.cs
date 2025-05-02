@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace _421FinalProj
 {
-    internal class Canvas
+    internal class CanvasManager
     {
-        private static Canvas c;
+        private static CanvasManager c;
         private List<TasksIF> tasks;
         private StateIF state;
 
-        private Canvas()
+        private CanvasManager()
         {
-            c = new Canvas();
+            
         }
 
-        public static Canvas getInstance()
+        public static CanvasManager getInstance()
         {
             if (c == null)
             {
-                c = new Canvas();
+                c = new CanvasManager();
             }
             return c;
         }
@@ -43,6 +43,11 @@ namespace _421FinalProj
 
         public List<TasksIF> getTasks() {
             return tasks;
+        }
+
+        public StateIF getState()
+        {
+            return state;
         }
     }
 }

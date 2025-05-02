@@ -22,5 +22,10 @@ namespace _421FinalProj
         {
             throw new NotImplementedException();
         }
+
+        public void Build()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
