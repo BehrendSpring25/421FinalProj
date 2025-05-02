@@ -1,0 +1,38 @@
+using _421FinalProj.UI;
+
+namespace _421FinalProj
+{
+    public partial class Form1 : Form
+    {
+        public UICanvas MainCanvas { get; }
+
+        public Form1()
+        {
+            InitializeComponent();
+            MainCanvas = new UICanvas();
+            Controls.Add(MainCanvas);
+            this.Load += Form1_Load;
+            MainCanvas.AllowDrop = true;
+
+        }
+
+        private void Form1_Load(object? sender, EventArgs e)
+        {
+
+            var emailBox = new TaskCard("Email", Color.LightBlue);
+            emailBox.setForm(this);
+            emailBox.setCanvas(MainCanvas);
+            
+            flowTasks.Controls.Add(emailBox.taskBox);
+
+            var smsBox = new TaskCard("SMS", Color.LightGreen);
+            smsBox.setForm(this);
+            smsBox.setCanvas(MainCanvas);
+            
+            flowTasks.Controls.Add(smsBox.taskBox);
+
+        }
+
+
+    }
+}

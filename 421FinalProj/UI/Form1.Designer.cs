@@ -37,7 +37,6 @@
             flowTasks = new FlowLayoutPanel();
             tpOut = new TabPage();
             splitter1 = new Splitter();
-            Canvas = new Panel();
             panelTop.SuspendLayout();
             panelToolBox.SuspendLayout();
             tabControl.SuspendLayout();
@@ -124,7 +123,7 @@
             tpOut.Location = new Point(4, 24);
             tpOut.Name = "tpOut";
             tpOut.Padding = new Padding(3);
-            tpOut.Size = new Size(213, 352);
+            tpOut.Size = new Size(193, 332);
             tpOut.TabIndex = 1;
             tpOut.Text = "Output";
             tpOut.UseVisualStyleBackColor = true;
@@ -136,16 +135,7 @@
             splitter1.Size = new Size(8, 380);
             splitter1.TabIndex = 2;
             splitter1.TabStop = false;
-            // 
-            // Canvas
-            // 
-            Canvas.BackColor = Color.WhiteSmoke;
-            Canvas.Dock = DockStyle.Fill;
-            Canvas.Location = new Point(229, 70);
-            Canvas.Name = "Canvas";
-            Canvas.Size = new Size(571, 380);
-            Canvas.TabIndex = 3;
-
+            
             // 
             // Form1
             // 
