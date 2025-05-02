@@ -179,17 +179,84 @@ namespace _421FinalProj
                 string droppedData = (string)e.Data.GetData(DataFormats.StringFormat);
                 var dropLocation = Canvas.PointToClient(new Point(e.X, e.Y));
 
-                var droppedLabel = new Label
+                var panel = new Panel
                 {
-                    Text = droppedData,
                     Location = dropLocation,
                     AutoSize = true,
-                    BackColor = Color.LightGray,
-                    BorderStyle = BorderStyle.FixedSingle
+                    BorderStyle = BorderStyle.FixedSingle,
+                    BackColor = Color.White
                 };
 
-                Canvas.Controls.Add(droppedLabel);
+                if (droppedData == "Email")
+                {
+                    panel = emailDrop(panel);
+                }
+                else if (droppedData == "SMS")
+                {
+                    panel = smsDrop(panel);
+                }
+
+                Canvas.Controls.Add(panel);
             }
+        }
+
+        private Panel emailDrop(Panel p)
+        {
+            p.BackColor = Color.LightBlue;
+
+            p.Controls.Add(CreateLabel("To:", new Point(5, 5)));
+            p.Controls.Add(CreateTextBox(new Point(50, 5)));
+            
+            p.Controls.Add(CreateLabel("Subject:", new Point(5, 35)));
+            p.Controls.Add(CreateTextBox(new Point(50, 35)));
+
+            p.Controls.Add(CreateLabel("Body:", new Point(5, 65)));
+            p.Controls.Add(CreateTextBox(new Point(50, 65), true, new Size(200, 100)));
+
+            return p;
+        }
+
+        private Panel smsDrop(Panel p)
+        {
+            p.BackColor = Color.LightGreen;
+
+            p.Controls.Add(CreateLabel("To:", new Point(5, 5)));
+            p.Controls.Add(CreateTextBox(new Point(50, 5)));
+
+            p.Controls.Add(CreateLabel("Message:", new Point(5, 35)));
+            p.Controls.Add(CreateTextBox(new Point(50, 35), true, new Size(200, 100)));
+
+            return p;
+        }
+
+        private Label CreateLabel(string txt, Point location)
+        {
+            return new Label
+            {
+                Text = txt,
+                Location = location,
+                AutoSize = true,
+            };
+        }
+
+        private TextBox CreateTextBox(Point location, bool multiline = false, Size? size = null)
+        {
+            var textBox = new TextBox
+            {
+                Location = location,
+                Multiline = multiline
+            };
+
+            if (size.HasValue)
+            {
+                textBox.Size = size.Value;
+            }
+            else
+            {
+                textBox.Width = 200;
+            }
+
+            return textBox;
         }
     }
 }
