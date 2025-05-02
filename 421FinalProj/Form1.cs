@@ -2,6 +2,7 @@ namespace _421FinalProj
 {
     public partial class Form1 : Form
     {
+        private PictureBox? ghostControl;
         public Form1()
         {
             InitializeComponent();
@@ -44,6 +45,15 @@ namespace _421FinalProj
             //flowTasks.Controls.Add(new PaletteItem("Email", "EmailTask"));
             //flowTasks.Controls.Add(new PaletteItem("SMS", "SmsTask"));
 
+            this.AllowDrop = true;
+            this.DragOver += Form_DragOver;
+
+
+            Canvas.AllowDrop = true;
+            Canvas.DragEnter += BoxdragEnter;
+            Canvas.DragDrop += BoxDrop;
+            Canvas.DragOver += Form_DragOver;
+
             var emailBox = new Label
             {
                 Text = "Email",
@@ -66,8 +76,8 @@ namespace _421FinalProj
             smsBox.MouseMove += SmsBox_MouseMove;
             flowTasks.Controls.Add(smsBox);
 
-            Canvas.DragEnter += BoxdragEnter;
-            Canvas.DragDrop += BoxDrop;
+            Canvas.DragEnter += BoxdragEnter!;
+            Canvas.DragDrop += BoxDrop!;
         }
 
         private void EmailBox_MouseMove(object sender, MouseEventArgs e)
@@ -76,8 +86,11 @@ namespace _421FinalProj
             {
                 if (sender is Control emailBox)
                 {
-                    // Fix for CS1503: Use a string key instead of typeof(TaskCard)
+                    GhostControl(emailBox);
+
                     emailBox.DoDragDrop(emailBox.Text, DragDropEffects.Copy | DragDropEffects.Move);
+
+                    RemoveGhostControl();
                 }
             }
         }
@@ -88,14 +101,38 @@ namespace _421FinalProj
             {
                 if (sender is Control smsBox)
                 {
+                    GhostControl(smsBox);
+
                     smsBox.DoDragDrop(smsBox.Text, DragDropEffects.Copy | DragDropEffects.Move);
+
+                    RemoveGhostControl();
                 }
             }
         }
 
+        private void GhostControl(Control control)
+        {
+            Bitmap b = new Bitmap(control.Width, control.Height);
+            control.DrawToBitmap(b, new Rectangle(0, 0, control.Width, control.Height));
+
+            ghostControl = new PictureBox
+            {
+                Image = b,
+                Size = control.Size,
+                BackColor = Color.Transparent,
+                Location = control.Location,
+                Parent = this,
+                Enabled = false
+            };
+
+            this.Controls.Add(ghostControl);
+            ghostControl.BringToFront();
+        }
+
         private void BoxdragEnter(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            //if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            if (e.Data?.GetDataPresent(DataFormats.StringFormat) == true)
             {
                 e.Effect = DragDropEffects.Copy;
             }
@@ -106,11 +143,52 @@ namespace _421FinalProj
 
         }
 
+        private void Form_DragOver(object sender, DragEventArgs e)
+        {
+            var mousePosition = this.PointToClient(new Point(e.X, e.Y));
+            if (Canvas.ClientRectangle.Contains(Canvas.PointToClient(mousePosition)))
+            {
+                return;
+            }
+
+            if (ghostControl != null)
+            {
+                ghostControl.Location = new Point(mousePosition.X - ghostControl.Width / 2, mousePosition.Y - ghostControl.Height / 2);
+            }
+        }
+
+        private void RemoveGhostControl()
+        {
+            if (ghostControl != null)
+            {
+                this.Controls.Remove(ghostControl);
+                ghostControl.Dispose();
+                ghostControl = null;
+            }
+        }
+
         private void BoxDrop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            //if (e.Data.GetDataPresent(DataFormats.StringFormat))
+            //{
+            //    string droppedData = (string)e.Data.GetData(DataFormats.StringFormat);
+            //}
+
+            if (sender == Canvas && e.Data.GetDataPresent(DataFormats.StringFormat))
             {
                 string droppedData = (string)e.Data.GetData(DataFormats.StringFormat);
+                var dropLocation = Canvas.PointToClient(new Point(e.X, e.Y));
+
+                var droppedLabel = new Label
+                {
+                    Text = droppedData,
+                    Location = dropLocation,
+                    AutoSize = true,
+                    BackColor = Color.LightGray,
+                    BorderStyle = BorderStyle.FixedSingle
+                };
+
+                Canvas.Controls.Add(droppedLabel);
             }
         }
     }

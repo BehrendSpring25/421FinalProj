@@ -145,6 +145,7 @@
             Canvas.Name = "Canvas";
             Canvas.Size = new Size(571, 380);
             Canvas.TabIndex = 3;
+
             // 
             // Form1
             // 
