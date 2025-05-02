@@ -88,19 +88,21 @@ namespace _421FinalProj
         {
             Point screenPt = PointToScreen(canvasPt);
 
-            foreach (Control card in Controls)
+            foreach (Control card in Controls)              // each TaskCard panel
             {
-                foreach (Control child in card.Controls)
+                foreach (Control child in card.Controls)    // its children
                 {
                     if (child is PortPanel port)
                     {
-                        // convert to card space
-                        Point ptInCard = card.PointToClient(screenPt);
+                        // ---- Rule #3: must be opposite side of start port ----
+                        if (_rubberStart != null &&
+                            port.Side == _rubberStart.Side)  // same side → skip
+                            continue;
 
-                        // inflate the port‑bounds to create an easy hit box
-                        Rectangle hit = Rectangle.Inflate(port.Bounds,
-                                                           SNAP_MARGIN,
-                                                           SNAP_MARGIN);
+                        // convert to card space + inflate bounds
+                        Point ptInCard = card.PointToClient(screenPt);
+                        Rectangle hit =
+                            Rectangle.Inflate(port.Bounds, SNAP_MARGIN, SNAP_MARGIN);
 
                         if (hit.Contains(ptInCard))
                             return port;

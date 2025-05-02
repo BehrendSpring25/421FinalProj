@@ -23,14 +23,16 @@ namespace _421FinalProj
             var emailBox = new TaskCard("Email", Color.LightBlue);
             emailBox.setForm(this);
             emailBox.setCanvas(MainCanvas);
-
+            
             flowTasks.Controls.Add(emailBox.taskBox);
 
             var smsBox = new TaskCard("SMS", Color.LightGreen);
             smsBox.setForm(this);
             smsBox.setCanvas(MainCanvas);
-
+            
             flowTasks.Controls.Add(smsBox.taskBox);
+            flowTasks.Controls.Add(startBox.taskBox);
+            flowTasks.Controls.Add(endBox.taskBox);
 
         }
 
