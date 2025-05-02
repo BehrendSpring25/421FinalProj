@@ -97,17 +97,21 @@ namespace _421FinalProj.UI
 
         private void Form_DragOver(object sender, DragEventArgs e)
         {
-            var mousePosition = Form.PointToClient(new Point(e.X, e.Y));
-            if (Canvas.ClientRectangle.Contains(Canvas.PointToClient(mousePosition)))
+            // convert *screen* → *form* once
+            Point formPt = Form.PointToClient(new Point(e.X, e.Y));
+
+            if (Canvas.ClientRectangle.Contains(Canvas.PointToClient(new Point(e.X, e.Y))))
             {
-                return;
+                // you can add canvas‑specific logic here
             }
 
+            // always move the ghost in *form* space
             if (ghostControl != null)
-            {
-                ghostControl.Location = new Point(mousePosition.X - ghostControl.Width / 2, mousePosition.Y - ghostControl.Height / 2);
-            }
+                ghostControl.Location =
+                    new Point(formPt.X - ghostControl.Width / 2,
+                              formPt.Y - ghostControl.Height / 2);
         }
+
 
         private void RemoveGhostControl()
         {
