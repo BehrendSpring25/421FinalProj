@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace _421FinalProj.UI
 {
@@ -25,6 +26,7 @@ namespace _421FinalProj.UI
                 BackColor = color,
                 AutoSize = true,
                 Padding = new Padding(10),
+                Margin = new Padding(10),
                 BorderStyle = BorderStyle.FixedSingle
             };
             taskBox.MouseMove += TaskBox_MouseMove;
@@ -158,6 +160,21 @@ namespace _421FinalProj.UI
                 {
                     panel = smsDrop(panel);
                 }
+                else if (droppedData == "Start")
+                {
+                    panel = startDrop(panel);
+                }
+                else if (droppedData == "End")
+                {
+                    panel = endDrop(panel);
+                }
+
+                panel.PerformLayout();
+                panel.Size = panel.PreferredSize;
+
+                panel.Location = new Point(
+                    dropLocation.X - panel.Width / 2,
+                    dropLocation.Y - panel.Height / 2);
 
                 Canvas.Controls.Add(panel);
             }
@@ -176,12 +193,16 @@ namespace _421FinalProj.UI
             p.Controls.Add(CreateLabel(p, "Body:", new Point(5, 65)));
             p.Controls.Add(CreateTextBox(p, new Point(50, 65), true, new Size(200, 100)));
 
+            p.PerformLayout();
+            p.Size = p.PreferredSize;
+            PortPanel portPanelL = new PortPanel("Left", p);
+            PortPanel portPanelR = new PortPanel("Right", p);
+
             return p;
         }
 
         private Panel smsDrop(Panel p)
         {
-            Debug.WriteLine(p.Width);
             p.BackColor = Color.LightGreen;
 
             p.Controls.Add(CreateLabel(p, "To:", new Point(5, 5)));
@@ -194,7 +215,28 @@ namespace _421FinalProj.UI
             p.Size = p.PreferredSize;
             PortPanel portPanelL = new PortPanel("Left", p);
             PortPanel portPanelR = new PortPanel("Right", p);
-            Debug.WriteLine(p.Width);
+
+            return p;
+        }
+
+        private Panel startDrop(Panel p)
+        {
+            p.BackColor = Color.Green;
+
+            p.Width = 30;
+            p.Height = 30;
+            PortPanel portPanelR = new PortPanel("Right", p);
+
+            return p;
+        }
+
+        private Panel endDrop(Panel p)
+        {
+            p.BackColor = Color.Red;
+
+            p.Width = 30;
+            p.Height = 30;
+            PortPanel portPanelL = new PortPanel("Left", p);
 
             return p;
         }
