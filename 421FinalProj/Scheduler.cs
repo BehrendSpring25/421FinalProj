@@ -59,7 +59,8 @@ namespace _421FinalProj
                 int next = waitCount - 1;
                 TasksIF nextTask = (TasksIF)waitingRequests[next];
 
-                for (int i = waitCount-2; i >= 0; --i) {
+                for (int i = waitCount - 2; i >= 0; --i)
+                {
                     TasksIF r;
                     r = (TasksIF)waitingRequests[i];
 
@@ -70,6 +71,7 @@ namespace _421FinalProj
                         Monitor.PulseAll(runningThread); // signal the next thread
                     }
                 }
+            }
         }
     }
 }
