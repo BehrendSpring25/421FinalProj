@@ -15,5 +15,17 @@ namespace _421FinalProj
             recip = recip + " ," + feature.getText();
             setRecipient(recip);
         }
+
+        public override void Run()
+        {
+            Thread thread = new Thread(() =>
+            {
+                Console.WriteLine("Sending SMS to: " + getRecipient());
+                Console.WriteLine("Content: " + getContent());
+                Console.WriteLine("SMS sent successfully!");
+            });
+
+            thread.Start();
+        }
     }
 }
