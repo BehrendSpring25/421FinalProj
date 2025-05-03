@@ -9,12 +9,11 @@ namespace _421FinalProj
     internal class CanvasManager
     {
         private static CanvasManager c;
-        private List<TasksIF> tasks;
+        private List<TasksIF> tasks = new List<TasksIF>(); // Fixed CS1526 and IDE0090  
         private StateIF state;
 
         private CanvasManager()
         {
-            
         }
 
         public static CanvasManager getInstance()
@@ -41,7 +40,8 @@ namespace _421FinalProj
             this.state = state;
         }
 
-        public List<TasksIF> getTasks() {
+        public List<TasksIF> getTasks()
+        {
             return tasks;
         }
 

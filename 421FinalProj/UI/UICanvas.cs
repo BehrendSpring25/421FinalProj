@@ -21,6 +21,8 @@ namespace _421FinalProj
         // add at top of UICanvas
         private const int SNAP_MARGIN = 20;
 
+        public IReadOnlyList<Connection> GetConnections() => _links;
+
 
         public event EventHandler? ConnectionChanged;
         private void RaiseConnectionChanged()
@@ -70,7 +72,10 @@ namespace _421FinalProj
             if (_rubberStart == null) return;
 
             var target = GetPortAt(e.Location);
-            if (target != null && target != _rubberStart)
+            if (target != null &&
+                target.Parent != _rubberStart.Parent &&                 // no self‑loop
+                !_links.Any(l => l.From == _rubberStart) &&             // Rule 1
+                !_links.Any(l => l.To == target))                     // Rule 2
             {
                 _links.Add(new Connection(_rubberStart, target));
                 RaiseConnectionChanged();
