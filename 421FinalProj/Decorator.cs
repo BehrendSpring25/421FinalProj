@@ -15,13 +15,17 @@ namespace _421FinalProj
             recip = recip + " ," + feature.getText();
             setRecipient(recip);
         }
+
         public override void Run()
         {
-            Console.WriteLine("Decorator");
-            Console.WriteLine("Recipient: " + getRecipient());
-            Console.WriteLine("Subject: " + getSubject());
-            Console.WriteLine("Content: " + getContent());
-            Console.WriteLine();
+            Thread thread = new Thread(() =>
+            {
+                Console.WriteLine("Sending SMS to: " + getRecipient());
+                Console.WriteLine("Content: " + getContent());
+                Console.WriteLine("SMS sent successfully!");
+            });
+
+            thread.Start();
         }
     }
 }
