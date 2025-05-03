@@ -41,5 +41,7 @@ namespace _421FinalProj
         {
             this.subject = subject;
         }
+
+        public abstract void Run();
     }
 }

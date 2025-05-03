@@ -14,5 +14,6 @@ namespace _421FinalProj
         public void setContent(CommonContents contents);
         public void setRecipient(string recipient);
         public void setSubject(CommonContents subject);
+        public void Run();
     }
 }
