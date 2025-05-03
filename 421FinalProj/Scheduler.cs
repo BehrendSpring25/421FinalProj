@@ -8,14 +8,15 @@ namespace _421FinalProj
     internal class Scheduler
     {
         private Thread? runningThread;
-        private readonly object threadLock = new object();
-        private readonly Queue<Thread> scheduled = new Queue<Thread>(); 
+        private ArrayList waitingThreads = new ArrayList();
+        private ArrayList waitingRequests = new ArrayList();
 
-        public void Enter()
+
+        public void Enter(TasksIF t)
         {
             Thread thisThread = Thread.CurrentThread;
 
-            lock (threadLock)
+            lock (this)
             {
                 if (runningThread == null)
                 {
@@ -23,29 +24,52 @@ namespace _421FinalProj
                     return;
                 }
 
-                scheduled.Enqueue(thisThread);
-
-                while (runningThread != thisThread)
+                waitingThreads.Add(thisThread);
+                waitingRequests.Add(t);
+            }
+            lock (thisThread)
+            {
+                while (thisThread != runningThread)
                 {
-                    Monitor.Wait(threadLock); 
+                    Monitor.Wait(thisThread); // wait until this thread is signaled
                 }
+            }
+
+            lock (this)
+            {
+                int i = waitingThreads.IndexOf(thisThread);
+                waitingThreads.Remove(i);
+                waitingRequests.RemoveAt(i);
             }
         }
 
         public void Exit()
         {
-            lock (threadLock)
+            int waitCount = waitingThreads.Count;
+            if (waitCount <= 0)
             {
-                if (scheduled.Count > 0)
-                {
-                    runningThread = scheduled.Dequeue();
-                    Monitor.PulseAll(threadLock); 
-                }
-                else
-                {
-                    runningThread = null;
-                }
+                runningThread = null;
             }
+            else if (waitCount == 1)
+            {
+                runningThread = (Thread)waitingThreads[0];
+            }
+            else
+            {
+                int next = waitCount - 1;
+                TasksIF nextTask = (TasksIF)waitingRequests[next];
+
+                for (int i = waitCount-2; i >= 0; --i) {
+                    TasksIF r;
+                    r = (TasksIF)waitingRequests[i];
+
+                    runningThread = (Thread)waitingThreads[i];
+
+                    lock (runningThread)
+                    {
+                        Monitor.PulseAll(runningThread); // signal the next thread
+                    }
+                }
         }
     }
 }
