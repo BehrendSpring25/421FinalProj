@@ -17,6 +17,11 @@ namespace _421FinalProj
             return contents.getText();
         }
 
+        public CommonContents getCommonContent()
+        {
+            return contents;
+        }
+
         public string getRecipient()
         {
             return recipient;

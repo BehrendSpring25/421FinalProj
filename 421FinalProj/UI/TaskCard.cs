@@ -205,19 +205,27 @@ namespace _421FinalProj.UI
         {
             p.BackColor = Color.LightGreen;
 
+            // — row 1 — “To”
             p.Controls.Add(CreateLabel(p, "To:", new Point(5, 5)));
             p.Controls.Add(CreateTextBox(p, new Point(50, 5)));
 
+            // — row 2 — “Message”
             p.Controls.Add(CreateLabel(p, "Message:", new Point(5, 35)));
             p.Controls.Add(CreateTextBox(p, new Point(50, 35), true, new Size(200, 100)));
 
+            // — row 3 — “Carrier”
+            p.Controls.Add(CreateLabel(p, "Carrier:", new Point(5, 145)));
+            p.Controls.Add(CreateCarrierDropDown(p, new Point(50, 142)));
+
+            // ports + sizing
             p.PerformLayout();
             p.Size = p.PreferredSize;
-            PortPanel portPanelL = new PortPanel("Left", p);
-            PortPanel portPanelR = new PortPanel("Right", p);
+            _ = new PortPanel("Left", p);
+            _ = new PortPanel("Right", p);
 
             return p;
         }
+
 
         private Panel startDrop(Panel p)
         {
@@ -276,6 +284,33 @@ namespace _421FinalProj.UI
 
             return textBox;
         }
+
+        private ComboBox CreateCarrierDropDown(Panel parent, Point location)
+        {
+            var cb = new ComboBox
+            {
+                Parent = parent,
+                Location = location,
+                Width = 150,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+
+            cb.Items.AddRange(new object[]
+            {
+                "AT&T",
+                "Verizon",
+                "T‑Mobile",
+                "Sprint (legacy)",
+                "US Cellular",
+                "Google Fi"
+            });
+
+            cb.SelectedIndex = 0;        // default
+
+            return cb;
+        }
+
+
     }
 
 }

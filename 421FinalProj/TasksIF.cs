@@ -11,6 +11,7 @@ namespace _421FinalProj
         public string getRecipient();
         public string getSubject();
         public string getContent();
+        public CommonContents getCommonContent();
         public void setContent(CommonContents contents);
         public void setRecipient(string recipient);
         public void setSubject(CommonContents subject);

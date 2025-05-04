@@ -16,8 +16,8 @@ namespace _421FinalProj
             {
                 _ui.Log("Starting SMS sending task");
                 SendGmail sendGmail = new SendGmail();
-                _ui.Log($"Sending SMS to {getRecipient()}");
-                sendGmail.SendMessage($"{getRecipient()}@vtext.com", "", getContent());
+                _ui.Log($"Sending SMS to {getRecipient()}@tmomail.net");
+                sendGmail.SendMessage($"{getRecipient()}@tmomail.net", "", getContent());
                 _ui.Log("SMS sent, task finished");
             });
 

@@ -1,31 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace _421FinalProj
 {
     internal class Decorator : AbsTask
     {
+        private readonly TasksIF _task;
 
-        public Decorator(TasksIF task, AdditionalFeatures feature)
+        public Decorator(TasksIF task, string carrierGateway)
         {
+            _task = task;
             string recip = task.getRecipient();
-            recip = recip + " ," + feature.getText();
-            setRecipient(recip);
+            setRecipient($"{recip}@{carrierGateway}");
+            setContent(task.getCommonContent());
         }
 
         public override void Run()
         {
-            Thread thread = new Thread(() =>
-            {
-                Console.WriteLine("Sending SMS to: " + getRecipient());
-                Console.WriteLine("Content: " + getContent());
-                Console.WriteLine("SMS sent successfully!");
-            });
-
-            thread.Start();
+            _task.Run();
         }
     }
 }

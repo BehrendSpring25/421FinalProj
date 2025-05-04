@@ -8,7 +8,8 @@ namespace _421FinalProj
 {
     internal class SMSBuilderIF : TaskBuilderIF
     {
-        TasksIF sms = new SmsTask();
+        private TasksIF sms = new SmsTask();
+
         public void Body(string content)
         {
             CommonContents body = new Content(content);
@@ -31,9 +32,9 @@ namespace _421FinalProj
             sms.setRecipient(recipient);
         }
 
-        public void addFeature(AdditionalFeatures feat)
+        public void AddCarrierGateway(string carrierGateway)
         {
-            sms = new Decorator(sms, feat);
+            sms = new Decorator(sms, carrierGateway);
         }
     }
 }

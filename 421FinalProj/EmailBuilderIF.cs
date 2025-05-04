@@ -34,7 +34,7 @@ namespace _421FinalProj
 
         public void addFeature(AdditionalFeatures feat)
         {
-            email = new Decorator(email, feat);
+            email = new Decorator(email, feat.ToString());
         }
     }
 }

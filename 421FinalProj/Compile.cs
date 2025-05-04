@@ -98,13 +98,39 @@ namespace _421FinalProj
                 }
                 else if (targetPanel.Name.Contains("/SMS", StringComparison.OrdinalIgnoreCase))
                 {
+                    // Controls index map for SMS node
+                    // 0: Label "To"
+                    // 1: TextBox (To number)
+                    // 2: Label "Message"
+                    // 3: TextBox (Body)
+                    // 4: Label "Carrier"
+                    // 5: ComboBox (Carrier selector)
+
+                    string toNumber = targetPanel.Controls[3].Text;
+                    string body = targetPanel.Controls[5].Text;
+                    string carrierUI = ((ComboBox)targetPanel.Controls[7]).SelectedItem!.ToString();
+
+                    // ----- carrier → gateway lookup -----
+                    string gateway = carrierUI switch
+                    {
+                        "AT&T" => "txt.att.net",
+                        "Verizon" => "vtext.com",
+                        "T‑Mobile" => "tmomail.net",
+                        "Sprint (legacy)" => "messaging.sprintpcs.com",
+                        "US Cellular" => "email.uscc.net",
+                        "Google Fi" => "msg.fi.google.com",
+                        _ => ""                        // fallback (shouldn’t happen)
+                    };
+
                     var sb = new SMSBuilderIF();
-                    sb.To(targetPanel.Controls[3].Text);
-                    sb.Body(targetPanel.Controls[5].Text);
+                    sb.To(toNumber);
+                    sb.Body(body);
+                    sb.AddCarrierGateway(gateway);          // builder stores or combines
 
                     c.addTask(sb.Build());
-                    _ui.Log($"   Added SMS task   → {targetPanel.Controls[1].Text}");
+                    _ui.Log($"   Added SMS task → {toNumber} via {carrierUI} ({gateway})");
                 }
+
                 else
                 {
                     _ui.Log($"WARNING: Unrecognized node type {targetPanel.Name} – skipped.");
