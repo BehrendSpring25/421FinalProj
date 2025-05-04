@@ -8,7 +8,7 @@ namespace _421FinalProj
     {
         public UICanvas MainCanvas { get; }
 
-        
+
 
         public Form1()
         {
@@ -71,5 +71,11 @@ namespace _421FinalProj
             rtbLog.ScrollToCaret();
         }
 
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            CanvasManager c = CanvasManager.getInstance();
+            c.setState(new Execute());
+            c.getState().execute();
+        }
     }
 }

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace _421FinalProj
 {
+    
     internal class Execute : StateIF
     {
+        private Scheduler s = new Scheduler();
         public void addTask(Task task)
         {
             throw new NotImplementedException();
@@ -15,7 +17,25 @@ namespace _421FinalProj
 
         public void execute()
         {
-            throw new NotImplementedException();
+            foreach(TasksIF task in CanvasManager.getInstance().getTasks())
+            {
+                try
+                {
+                    s.Enter(task);
+                    try
+                    {
+                        task.Run();
+                    }
+                    finally
+                    {
+                        s.Exit();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error executing task: {e.Message}");
+                }
+            }
         }
 
         public void removeTask(Task task)
