@@ -34,21 +34,21 @@ namespace _421FinalProj
             });
         }
 
-        public MimeMessage BuildMessage()
+        public MimeMessage BuildMessage(String recipient, String subject, String content)
         {
             var msg = new MimeMessage();
             msg.From.Add(MailboxAddress.Parse("me"));                 // “me” = authenticated user
-            msg.To.Add(MailboxAddress.Parse("ckm5913@psu.edu"));
-            msg.Subject = "Hello from the Gmail API";
+            msg.To.Add(MailboxAddress.Parse(recipient));
+            msg.Subject = subject;
 
-            msg.Body = new TextPart("plain") { Text = "your mother" };
+            msg.Body = new TextPart("plain") { Text = content };
             return msg;
         }
 
-        public void SendMessage()
+        public void SendMessage(String recipient, String subject, String content)
         {
             var service = GetService();
-            var mime = BuildMessage();
+            var mime = BuildMessage(recipient, subject, content);
 
             using var ms = new MemoryStream();
             mime.WriteTo(ms);

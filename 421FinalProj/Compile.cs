@@ -99,8 +99,8 @@ namespace _421FinalProj
                 else if (targetPanel.Name.Contains("/SMS", StringComparison.OrdinalIgnoreCase))
                 {
                     var sb = new SMSBuilderIF();
-                    sb.To(targetPanel.Controls[1].Text);
-                    sb.Body(targetPanel.Controls[3].Text);
+                    sb.To(targetPanel.Controls[3].Text);
+                    sb.Body(targetPanel.Controls[5].Text);
 
                     c.addTask(sb.Build());
                     _ui.Log($"   Added SMS task   → {targetPanel.Controls[1].Text}");

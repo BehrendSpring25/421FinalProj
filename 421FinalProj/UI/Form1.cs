@@ -73,6 +73,7 @@ namespace _421FinalProj
 
         private void btnRun_Click(object sender, EventArgs e)
         {
+            ShowOutputTab();
             CanvasManager c = CanvasManager.getInstance();
             c.setState(new Execute());
             c.getState().execute();
