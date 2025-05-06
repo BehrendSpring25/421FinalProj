@@ -14,24 +14,29 @@ namespace _421FinalProj
 {
     internal class SendGmail
     {
+        private static readonly object fileLock = new(); // Lock object for file access
+
         public GmailService GetService()
         {
-            using var stream = File.OpenRead("GmailAPIKey\\client_secret.json");
-
-            var credPath = "token.json";
-            var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                GoogleClientSecrets.FromStream(stream).Secrets,
-                new[] { GmailService.Scope.GmailSend },
-                "user",
-                CancellationToken.None,
-                new FileDataStore(credPath, true)
-            ).Result;
-
-            return new GmailService(new BaseClientService.Initializer
+            lock (fileLock) // Synchronize access to the file
             {
-                HttpClientInitializer = credential,
-                ApplicationName = "Gmail-API-SendDemo"
-            });
+                using var stream = File.OpenRead("GmailAPIKey\\client_secret.json");
+
+                var credPath = "token.json";
+                var credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromStream(stream).Secrets,
+                    new[] { GmailService.Scope.GmailSend },
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)
+                ).Result;
+
+                return new GmailService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = "Gmail-API-SendDemo"
+                });
+            }
         }
 
         public MimeMessage BuildMessage(String recipient, String subject, String content)

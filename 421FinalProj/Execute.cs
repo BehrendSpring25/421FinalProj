@@ -24,7 +24,7 @@ namespace _421FinalProj
                     s.Enter(task);
                     try
                     {
-                        task.Run();
+                        task.Run(); // Tasks will run sequentially
                     }
                     finally
                     {

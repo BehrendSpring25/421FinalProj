@@ -12,16 +12,11 @@ namespace _421FinalProj
         private Form1? _ui => Application.OpenForms.OfType<Form1>().FirstOrDefault();
         public override void Run()
         {
-            Thread t = new Thread(() =>
-            {
-                _ui.Log("Starting Email sending task");
-                SendGmail sendGmail = new SendGmail();
-                _ui.Log($"Sending Email to {getRecipient()}");
-                sendGmail.SendMessage(getRecipient(), getSubject(), getContent());
-                _ui.Log("Email sent, task finished");
-            });
-
-            t.Start();
+            _ui.Log("Starting Email sending task");
+            SendGmail sendGmail = new SendGmail();
+            _ui.Log($"Sending Email to {getRecipient()}");
+            sendGmail.SendMessage(getRecipient(), getSubject(), getContent());
+            _ui.Log("Email sent, task finished");
         }
     }
 }
