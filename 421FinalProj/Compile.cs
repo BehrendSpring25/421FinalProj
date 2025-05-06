@@ -89,9 +89,9 @@ namespace _421FinalProj
                 if (targetPanel.Name.Contains("/Email", StringComparison.OrdinalIgnoreCase))
                 {
                     var eb = new EmailBuilderIF();
-                    eb.To(targetPanel.Controls[1].Text);
-                    eb.Subject(targetPanel.Controls[3].Text);
-                    eb.Body(targetPanel.Controls[5].Text);
+                    eb.To(targetPanel.Controls[3].Text);
+                    eb.Subject(targetPanel.Controls[5].Text);
+                    eb.Body(targetPanel.Controls[7].Text);
 
                     c.addTask(eb.Build());
                     _ui.Log($"   Added Email task → {targetPanel.Controls[1].Text}");

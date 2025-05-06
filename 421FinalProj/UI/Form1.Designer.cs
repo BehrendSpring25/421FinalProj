@@ -172,7 +172,7 @@
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(4, 5, 4, 5);
             Name = "Form1";
-            Text = "B0n3r";
+            Text = "Communication Automation";
             panelTop.ResumeLayout(false);
             panelToolBox.ResumeLayout(false);
             tabControl.ResumeLayout(false);
